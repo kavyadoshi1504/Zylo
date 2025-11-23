@@ -262,9 +262,20 @@ async def play_song(song_id: int, request: Request):
 @fastapi_app.post("/generate_karaoke")
 async def generate_karaoke_endpoint(req: SongRequest = Body(...)):
     try:
-        # ensure_karaoke should upload to Drive & save metadata to Railway DB and return preview URLs
-        karaoke_info = ensure_karaoke(req.song_name)
+        raw_name = req.song_name or ""
+        normalized = raw_name.strip().lower()
+
+        if not normalized:
+            raise HTTPException(status_code=400, detail="Song name cannot be empty")
+
+        # internally use normalized version to avoid duplicates
+        karaoke_info = ensure_karaoke(normalized)
+
+        # but frontend gets original display name
+        karaoke_info["display_name"] = raw_name.strip()
+
         return karaoke_info
+
     except FileNotFoundError as e:
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
