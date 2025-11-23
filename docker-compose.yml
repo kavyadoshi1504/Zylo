@@ -1,0 +1,49 @@
+services:
+  redis:
+    image: redis:7
+    container_name: zylo-redis
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.gpu
+      cache_from:
+        - zylo-backend:latest
+    container_name: zylo-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - MYSQL_HOST=host.docker.internal
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=kavya#@123
+      - MYSQL_DATABASE=musicdb
+      - REDIS_HOST=redis
+    depends_on:
+      - redis
+    volumes:
+      - ./backend:/app
+      - /app/__pycache__
+      - "/mnt/c/Collaborative music/music dataset:/data/music"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  frontend:
+    build: ./frontend
+    container_name: zylo-frontend
+    ports:
+      - "5173:5173"
+    working_dir: /app
+    command: ["npm", "run", "dev", "--", "--host"]
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true

@@ -1,0 +1,63 @@
+.karaoke-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.karaoke-container h2 {
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #222;
+}
+
+audio {
+  width: 100%;
+  margin-bottom: 20px;
+  outline: none;
+}
+
+.lyrics-display {
+  font-size: 20px;
+  line-height: 1.7;
+  color: #555;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f8f8f8;
+  min-height: 150px; /* Increased height for better visibility */
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+  overflow-y: auto;
+  max-height: 400px; /* Allow scrolling if lyrics are long */
+}
+
+.lyrics-line {
+  margin-bottom: 8px;
+  min-height: 1.5em; /* Prevents layout jumps for empty lines */
+}
+
+.highlighted {
+  color: #fff;
+  background-color: #2563eb;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-weight: bold;
+  box-shadow: 0 0 8px rgba(37, 99, 235, 0.5);
+  transition: all 0.1s ease;
+  display: inline-block; /* Helps with transform/padding */
+}
+
+@media (max-width: 600px) {
+  .lyrics-display {
+    font-size: 16px;
+    padding: 10px;
+  }
+  
+  .karaoke-container {
+    padding: 10px;
+  }
+}
