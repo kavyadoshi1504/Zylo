@@ -2,7 +2,7 @@ import { useState } from "react";
 import LandingPage from "./pages/LandingPage";
 import SpacesPage from "./pages/SpacesPage";
 import ChatWindow from "./pages/ChatWindow";
-import Karaoke from "./pages/Karaoke";
+import Karaoke from "./pages/karaoke";
 import MusicBrowser from "./pages/MusicBrowser";
 
 function App() {
