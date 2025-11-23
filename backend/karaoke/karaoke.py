@@ -20,7 +20,39 @@ from googleapiclient.http import MediaIoBaseDownload, MediaFileUpload
 import io
 
 import whisperx
+# ============================================
+# FASTAPI WRAPPER FOR MAIN.PY
+# ============================================
+from pydantic import BaseModel
 
+class SongRequest(BaseModel):
+    song_name: str
+
+
+def ensure_karaoke(song_name: str):
+    """
+    FastAPI wrapper used by main.py
+    - case-insensitive match
+    - returns accompaniment, vocals, lyrics
+    """
+
+    if not song_name:
+        raise ValueError("Song name is empty")
+
+    # GPU if available
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    # Use the full pipeline
+    result = process_song(song_name.lower(), device)
+
+    return {
+        "song_id": result["song_id"],
+        "title": result["title"],
+        "vocals_url": result["vocals_url"],
+        "accompaniment_url": result["accompaniment_url"],
+        "lyrics_url": result["lyrics_url"],
+        "sample_lyrics": result["sample_lyrics"],
+    }
 
 # ============================================
 # CONFIGURATION
@@ -318,18 +350,3 @@ def process_song(song_name, device):
         "lyrics_url": lyrics_url,
         "sample_lyrics": lines[:1]
     }
-
-
-# ============================================
-# MAIN
-# ============================================
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("song", help="Song name to process")
-    args = parser.parse_args()
-
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-    log.info("Using device: %s", device)
-
-    result = process_song(args.song, device)
-    print(json.dumps(result, indent=2))
