@@ -1,4 +1,4 @@
-# core API
+# Core API
 fastapi==0.121.0
 uvicorn==0.38.0
 python-dotenv==1.2.1
@@ -8,30 +8,30 @@ redis==5.0.1
 requests==2.32.5
 tqdm==4.67.1
 
-# audio / ML
-numpy==1.24.4
-scipy==1.10.1          # downgraded for compatibility
+# ML / Audio
+numpy==2.0.2
+scipy==1.13.1
 ffmpeg-python==0.2.0
-soundfile==0.12.1
+soundfile==0.13.1
 
-# whisperx (installs correct torch)
+# WhisperX (brings torch CPU automatically)
 whisperx==3.7.4
 
-# demucs CPU version (no GPU)
+# Demucs (CPU version)
 demucs==4.0.0
 
-# tensorflow CPU build
+# TensorFlow CPU
 tensorflow-cpu==2.9.3
 tensorflow-io-gcs-filesystem==0.31.0
 
-# DB / utils
+# DB / Utils
 mysql-connector-python==8.3.0
+PyYAML==6.0.3
 coloredlogs==15.0.1
 colorama==0.4.6
 humanfriendly==10.0
-PyYAML==6.0.3
 
-# google drive API
+# Google APIs
 google-api-python-client==2.88.0
 google-auth==2.22.0
 google-auth-httplib2==0.1.0
