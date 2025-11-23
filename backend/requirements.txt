@@ -1,4 +1,4 @@
-# --- Core Server ---
+# --- Core server ---
 fastapi==0.121.0
 uvicorn==0.38.0
 python-dotenv==1.2.1
@@ -12,19 +12,19 @@ tqdm==4.67.1
 ffmpeg-python==0.2.0
 soundfile==0.13.1
 
-# --- NUMPY 2.0 STACK ---
-# STRICT CONSTRAINT: WhisperX 3.7.4 requires numpy>=2.0.2,<2.1.0
-numpy>=2.0.2,<2.1.0
-# Scipy 1.13+ is required for Numpy 2.0 compatibility
+# --- Numpy / SciPy required by whisperx ---
+numpy==2.0.2
 scipy==1.13.1
 
-# --- Models (CPU Optimized) ---
+# --- WhisperX (CPU) ---
 whisperx==3.7.4
 
-# RELAXED CONSTRAINT: Demucs
-# Bumped >4.0.0 to attempt resolution with Numpy 2.0 structures.
-# If this fails, you may need to install Demucs directly from source.
-demucs>4.0.0
+# --- Demucs (optional heavy) - keep but may require extra steps; see extras file below ---
+demucs==4.0.0
+
+# --- TensorFlow CPU (if you need TF) ---
+tensorflow-cpu==2.9.3
+tensorflow-io-gcs-filesystem==0.31.0
 
 # --- Database + Utils ---
 mysql-connector-python==8.3.0
@@ -37,5 +37,4 @@ humanfriendly==10.0
 google-api-python-client==2.88.0
 google-auth==2.22.0
 google-auth-httplib2==0.1.0
-# SECURITY FIX: Updated from 0.4.6 to 1.2.1
-google-auth-oauthlib==1.2.1
+google-auth-oauthlib==0.4.6

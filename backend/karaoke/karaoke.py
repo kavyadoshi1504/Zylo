@@ -25,35 +25,6 @@ import whisperx
 # ============================================
 from pydantic import BaseModel
 
-class SongRequest(BaseModel):
-    song_name: str
-
-
-def ensure_karaoke(song_name: str):
-    """
-    FastAPI wrapper used by main.py
-    - case-insensitive match
-    - returns accompaniment, vocals, lyrics
-    """
-
-    if not song_name:
-        raise ValueError("Song name is empty")
-
-    # GPU if available
-    device = "cuda" if torch.cuda.is_available() else "cpu"
-
-    # Use the full pipeline
-    result = process_song(song_name.lower(), device)
-
-    return {
-        "song_id": result["song_id"],
-        "title": result["title"],
-        "vocals_url": result["vocals_url"],
-        "accompaniment_url": result["accompaniment_url"],
-        "lyrics_url": result["lyrics_url"],
-        "sample_lyrics": result["sample_lyrics"],
-    }
-
 # ============================================
 # CONFIGURATION
 # ============================================
@@ -349,4 +320,33 @@ def process_song(song_name, device):
         "accompaniment_url": accomp_url,
         "lyrics_url": lyrics_url,
         "sample_lyrics": lines[:1]
+    }
+
+class SongRequest(BaseModel):
+    song_name: str
+
+
+def ensure_karaoke(song_name: str):
+    """
+    FastAPI wrapper used by main.py
+    - case-insensitive match
+    - returns accompaniment, vocals, lyrics
+    """
+
+    if not song_name:
+        raise ValueError("Song name is empty")
+
+    # GPU if available
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+
+    # Use the full pipeline
+    result = process_song(song_name.lower(), device)
+
+    return {
+        "song_id": result["song_id"],
+        "title": result["title"],
+        "vocals_url": result["vocals_url"],
+        "accompaniment_url": result["accompaniment_url"],
+        "lyrics_url": result["lyrics_url"],
+        "sample_lyrics": result["sample_lyrics"],
     }
