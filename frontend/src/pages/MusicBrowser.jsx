@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 export default function MusicBrowser() {
-  const API_BASE_URL = "http://localhost:8000";
+  const API_BASE_URL = "VITE_API_URL";
 
   const [artists, setArtists] = useState([]);
   const [albums, setAlbums] = useState([]);
