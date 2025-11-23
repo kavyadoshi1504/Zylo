@@ -1,29 +1,56 @@
-fastapi==0.110.0
-uvicorn==0.30.0
-
-mysql-connector-python==8.3.0
-
-google-api-python-client==2.125.0
-google-auth==2.31.0
-google-auth-oauthlib==1.2.0
-
-torch==2.8.0
-torchaudio==2.8.0
-
-demucs==4.0.0
-openai-whisper==20250625
-faster-whisper==1.2.1
-whisperx @ git+https://github.com/m-bain/whisperx.git
-
-numba==0.62.1
-llvmlite==0.45.1
-
-pydantic==1.10.14
-python-multipart==0.0.9
-
-numpy==2.0.2
-pandas==2.2.3
-
-soundfile==0.13.1
+# ─────────────────────────────────────────
+# CORE FRAMEWORK
+# ─────────────────────────────────────────
+fastapi==0.121.0
+uvicorn==0.38.0
+python-dotenv==1.2.1
+python-socketio==5.11.4
+pydantic==2.12.3
+redis==5.0.1
 requests==2.32.5
 tqdm==4.67.1
+
+# ─────────────────────────────────────────
+# AUDIO PROCESSING
+# ─────────────────────────────────────────
+ffmpeg-python==0.2.0
+soundfile==0.13.1
+numpy==2.0.2
+scipy==1.13.1
+
+# ─────────────────────────────────────────
+# TORCH (Required by WhisperX + Demucs)
+# IMPORTANT: These versions MUST match WhisperX 3.7.4
+# ─────────────────────────────────────────
+torch==2.8.0
+torchaudio==2.8.0
+# torchvision intentionally REMOVED (incompatible)
+
+# ─────────────────────────────────────────
+# ML / SEPARATION MODELS
+# ─────────────────────────────────────────
+demucs==4.0.0
+whisperx==3.7.4
+openai-whisper==20250625
+faster-whisper==1.2.1
+
+# ─────────────────────────────────────────
+# DATABASE + CONFIG
+# ─────────────────────────────────────────
+mysql-connector-python==8.3.0
+PyYAML==6.0.3
+
+# ─────────────────────────────────────────
+# LOGGING + UTILS
+# ─────────────────────────────────────────
+coloredlogs==15.0.1
+colorama==0.4.6
+humanfriendly==10.0
+
+# ─────────────────────────────────────────
+# GOOGLE DRIVE API
+# ─────────────────────────────────────────
+google-api-python-client==2.88.0
+google-auth==2.22.0
+google-auth-httplib2==0.1.0
+google-auth-oauthlib==1.2.1
