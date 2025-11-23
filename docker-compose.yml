@@ -8,7 +8,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: backend/Dockerfile
+      dockerfile: Dockerfile
       cache_from:
         - zylo-backend:latest
     container_name: zylo-backend
