@@ -1,6 +1,4 @@
-# -------------------------------
-# CORE API + UTILS
-# -------------------------------
+# core API
 fastapi==0.121.0
 uvicorn==0.38.0
 python-dotenv==1.2.1
@@ -9,37 +7,32 @@ pydantic==2.12.3
 redis==5.0.1
 requests==2.32.5
 tqdm==4.67.1
+
+# audio / ML
+numpy==1.24.4
+scipy==1.10.1          # downgraded for compatibility
+ffmpeg-python==0.2.0
+soundfile==0.12.1
+
+# whisperx (installs correct torch)
+whisperx==3.7.4
+
+# demucs CPU version (no GPU)
+demucs==4.0.0
+
+# tensorflow CPU build
+tensorflow-cpu==2.9.3
+tensorflow-io-gcs-filesystem==0.31.0
+
+# DB / utils
 mysql-connector-python==8.3.0
 coloredlogs==15.0.1
 colorama==0.4.6
 humanfriendly==10.0
 PyYAML==6.0.3
 
-# -------------------------------
-# GOOGLE DRIVE + AUTH
-# -------------------------------
+# google drive API
 google-api-python-client==2.88.0
 google-auth==2.22.0
 google-auth-httplib2==0.1.0
-google-auth-oauthlib==0.4.6     # FIXED for TensorFlow
-
-# -------------------------------
-# AUDIO / MATH
-# -------------------------------
-numpy==2.0.2                    # whisperx & pandas requirement
-scipy==1.13.1                   # last version supporting numpy 2.0.x
-pandas==2.2.3                   # whisperx requirement
-soundfile==0.13.1
-ffmpeg-python==0.2.0
-
-# -------------------------------
-# ML + SEPARATION
-# -------------------------------
-demucs==4.0.0
-whisperx==3.7.4
-
-# -------------------------------
-# TENSORFLOW (optional)
-# -------------------------------
-tensorflow==2.9.3
-tensorflow-io-gcs-filesystem==0.31.0
+google-auth-oauthlib==0.4.6
