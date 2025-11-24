@@ -60,7 +60,7 @@ function App() {
                 setError("");
                 try {
                   const res = await fetch(
-                    "http://localhost:8000/generate_karaoke",
+                    "https://zylo-y1ys.onrender.com/generate_karaoke",
                     {
                       method: "POST",
                       headers: { "Content-Type": "application/json" },
