@@ -37,15 +37,20 @@ SERVICE_ACCOUNT_FILE = os.getenv("SERVICE_ACCOUNT_FILE", "service_account.json")
 TEMP_DIR = os.path.join(os.getcwd(), "temp")
 os.makedirs(TEMP_DIR, exist_ok=True)
 
-# Developer-uploaded local path (return as 'url' so tool will transform it)
-UPLOADED_SAMPLE_LOCAL_PATH = "/mnt/data/18766534-f1a8-48ce-8e0a-35d3d4b3ea29.png"
+# Developer-uploaded local path (return as 'url' so your tool will transform it)
+UPLOADED_SAMPLE_LOCAL_PATH = "/mnt/data/18766534-f1a8-48ce-8f2d-af442bd121af.png"
 
 # ----------------------------
 # APP + CORS + SOCKET.IO
 # ----------------------------
 sio = socketio.AsyncServer(
     async_mode="asgi",
-    cors_allowed_origins=["http://localhost:5173", "http://127.0.0.1:5173", "https://zylo-y1ys.onrender.com" ,"*"],
+    cors_allowed_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "https://zylo-y1ys.onrender.com",
+        "*",
+    ],
 )
 fastapi_app = FastAPI()
 
@@ -201,6 +206,7 @@ async def stream_drive_file(file_id: str, range_header: str = None):
         headers_out["Content-Range"] = content_range
 
     return StreamingResponse(iter_chunks(resp), status_code=status_code, headers=headers_out, media_type=mime_type)
+
 async def progress_sync_task():
     while True:
         try:
@@ -232,7 +238,7 @@ async def play_song(song_id: int, request: Request):
     """
     # 1) Lookup audio_url in DB
     rows = execute_read_query(
-        "SELECT audio_url FROM songs WHERE id = %s", 
+        "SELECT audio_url FROM songs WHERE id = %s",
         (song_id,)
     )
     if not rows:
@@ -326,7 +332,7 @@ async def get_songs(artist_name: str, album_name: str):
     return rows
 
 # ----------------------------
-# Socket.IO + spaces logic (complete handlers)
+# Socket.IO + spaces logic (kept as-is per request)
 # ----------------------------
 @sio.event
 async def connect(sid, environ):
