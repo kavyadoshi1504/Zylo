@@ -1,34 +1,27 @@
-# ---------------------
-# 1. Base Image
-# ---------------------
+# Use Python base image
 FROM python:3.10-slim
 
-# disable bytecode
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-
-# ---------------------
-# 2. Install system deps
-# ---------------------
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ffmpeg git curl && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# ---------------------
-# 3. Install ONLY lightweight Python deps
-# ---------------------
-COPY requirements_fast.txt /app/requirements_fast.txt
-RUN pip install --no-cache-dir -r /app/requirements_fast.txt
-
-# ---------------------
-# 4. App Files
-# ---------------------
+# Create app directory
 WORKDIR /app
-COPY . .
 
-# ---------------------
-# 5. Startup Script
-# ---------------------
-RUN chmod +x /app/start.sh
+# Install OS packages needed for ffmpeg, whisperX, demucs
+RUN apt-get update && apt-get install -y \
+    ffmpeg \
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
-CMD ["/bin/bash", "/app/start.sh"]
+# Copy backend folder
+COPY backend ./backend
+
+# Install Python requirements
+RUN pip install --upgrade pip
+RUN pip install -r backend/requirements.txt
+
+# Make start.sh executable
+RUN chmod +x start.sh
+
+# Expose port
+EXPOSE 8000
+
+# Start the app
+CMD ["bash", "backend/start.sh"]
