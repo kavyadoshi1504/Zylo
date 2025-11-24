@@ -45,7 +45,7 @@ UPLOADED_SAMPLE_LOCAL_PATH = "/mnt/data/18766534-f1a8-48ce-8e0a-35d3d4b3ea29.png
 # ----------------------------
 sio = socketio.AsyncServer(
     async_mode="asgi",
-    cors_allowed_origins=["http://localhost:5173", "http://127.0.0.1:5173", "*"],
+    cors_allowed_origins=["http://localhost:5173", "http://127.0.0.1:5173", "https://zylo-y1ys.onrender.com" ,"*"],
 )
 fastapi_app = FastAPI()
 
