@@ -13,9 +13,12 @@ RUN apt-get update && apt-get install -y \
 # Copy backend folder
 COPY backend ./backend
 
+# Copy start.sh from project root
+COPY start.sh ./start.sh
+
 # Install Python requirements
 RUN pip install --upgrade pip
-RUN pip install -r backend/requirements.txt
+RUN pip install -r backend/requirements_fast.txt
 
 # Make start.sh executable
 RUN chmod +x start.sh
@@ -24,4 +27,4 @@ RUN chmod +x start.sh
 EXPOSE 8000
 
 # Start the app
-CMD ["bash", "backend/start.sh"]
+CMD ["bash", "start.sh"]
