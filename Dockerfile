@@ -18,7 +18,7 @@ COPY start.sh ./start.sh
 
 # Install Python requirements
 RUN pip install --upgrade pip
-RUN pip install -r backend/requirements_fast.txt
+RUN pip install -r backend/requirements.txt
 
 # Make start.sh executable
 RUN chmod +x start.sh
