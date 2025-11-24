@@ -77,16 +77,22 @@ gdrive = drive_service()
 def download_from_drive(file_id, out_path):
     """Downloads a Drive file to a local path safely."""
     log.info("Downloading from Drive: %s", file_id)
-    request = gdrive.files().get_media(fileId=file_id)
-    fh = io.FileIO(out_path, "wb")
-    downloader = MediaIoBaseDownload(fh, request)
+    try:
+        request = gdrive.files().get_media(fileId=file_id)
+        fh = io.FileIO(out_path, "wb")
+        downloader = MediaIoBaseDownload(fh, request)
 
-    done = False
-    while not done:
-        status, done = downloader.next_chunk()
-        if status:
-            log.info("Download %d%%", int(status.progress() * 100))
+        done = False
+        while not done:
+            status, done = downloader.next_chunk()
+            if status:
+                log.info("Download %d%%", int(status.progress() * 100))
 
+    except Exception as e:
+        log.error("🔥 ERROR DURING GOOGLE DRIVE DOWNLOAD")
+        log.error("Type: %s", type(e).__name__)
+        log.error("Message: %s", str(e))
+        raise
 
 def upload_to_drive(local_path, filename, folder_id, mime):
     """Uploads a file to Drive & returns (file_id, preview_url)."""
