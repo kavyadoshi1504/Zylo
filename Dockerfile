@@ -1,29 +1,35 @@
-# Use Python base image
+# Use Python 3.10
 FROM python:3.10-slim
 
-# Create app directory
+# Create working directory
 WORKDIR /app
 
-# Install OS packages needed for ffmpeg (whisperX/demucs removed)
+# Install system dependencies (ffmpeg required for audio)
 RUN apt-get update && apt-get install -y \
     ffmpeg \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy backend folder EXACTLY
-COPY backend/ /app/backend/
+# Copy backend folder (contains main.py, karaoke/, requirements.txt, etc.)
+COPY backend ./backend
 
-# Copy start.sh from root
-COPY start.sh /app/start.sh
-RUN chmod +x /app/start.sh
+# Copy the start.sh from project root
+COPY start.sh ./start.sh
 
-# Make backend importable
+# Ensure Python sees backend as a module
 ENV PYTHONPATH="/app/backend:${PYTHONPATH}"
 
-# Install requirements
+# Upgrade pip
 RUN pip install --upgrade pip
-RUN pip install -r /app/backend/requirements.txt
 
+# Install Python dependencies
+RUN pip install -r backend/requirements.txt
+
+# Make start.sh executable
+RUN chmod +x start.sh
+
+# Expose backend port
 EXPOSE 8000
 
-CMD ["bash", "/app/start.sh"]
+# Start FastAPI server
+CMD ["bash", "start.sh"]
