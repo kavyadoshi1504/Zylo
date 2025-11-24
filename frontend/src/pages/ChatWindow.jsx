@@ -329,7 +329,7 @@ export default function ChatWindow({ username, space, setPage, setKaraokeData })
   const playKaraoke = async (songName) => {
     try {
       setLoadingKaraoke(true);
-      const res = await fetch("VITE_API_URL/generate_karaoke", {
+      const res = await fetch("https://zylo-y1ys.onrender.com/generate_karaoke", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ song_name: songName }),
