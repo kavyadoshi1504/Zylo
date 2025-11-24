@@ -407,6 +407,7 @@ async def send_message(sid, data):
 @sio.on("suggest_song")
 async def suggest_song(sid, data):
     global song_counter
+
     space = data.get("space")
     song_raw = data.get("song")
     user = data.get("user")
@@ -431,9 +432,9 @@ async def suggest_song(sid, data):
 
     if not rows:
         # ---- (2) Song not found → send error ----
-        await sio.emit("chat_message",
-                       {"user": "SYSTEM", "msg": f"❌ Song '{song_raw}' not found in database."},
-                       room=space)
+        await sio.emit("song_not_found",
+                       {"reason": f"Song '{song_raw}' not found in database."},
+                       to=sid)
         return
 
     # ---- (3) Song found ----
@@ -449,17 +450,18 @@ async def suggest_song(sid, data):
         "votes": {},
         "is_playing": False,
     })
-    # 1️⃣ Check database for exact (case-insensitive) match
+
+    # 1️⃣ This is the FIX — use song_name, not undefined "song"
     rows = execute_read_query(
         "SELECT id FROM songs WHERE LOWER(title) = %s LIMIT 1",
-        (song.lower(),)
+        (song_name,)
     )
 
     if not rows:
         await sio.emit("song_not_found",
-                    {"reason": f"'{song}' is not in the database"},
-                    room=sid)
-        return  # ❗ do NOT add to leaderboard
+                       {"reason": f"'{song_raw}' is not in the database"},
+                       to=sid)
+        return
 
     song_counter += 1
 
@@ -469,7 +471,7 @@ async def suggest_song(sid, data):
         "artist": proper_artist,
         "votes": 0,
         "submitted_by": user,
-        "db_song_id": db_song["id"],  # IMPORTANT: link to DB id for playback
+        "db_song_id": db_song["id"],
     }
 
     # ---- (4) Add to leaderboard ----
