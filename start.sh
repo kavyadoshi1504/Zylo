@@ -1,34 +1,18 @@
-# ---------------------
-# 1. Base Image
-# ---------------------
-FROM python:3.10-slim
+echo "🔥 Starting ZYLO..."
 
-# disable bytecode
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+echo "📦 Installing WhisperX & Demucs at runtime (cached)..."
+pip install whisperx==3.7.4 demucs==4.0.0 --no-cache-dir
 
-# ---------------------
-# 2. Install system deps
-# ---------------------
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ffmpeg git curl && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+echo "📥 Preloading WhisperX models..."
+python - << 'EOF'
+import whisperx
+model = whisperx.load_model("base", device="cpu")
+EOF
 
-# ---------------------
-# 3. Install ONLY lightweight Python deps
-# ---------------------
-COPY requirements_fast.txt /app/requirements_fast.txt
-RUN pip install --no-cache-dir -r /app/requirements_fast.txt
+echo "📥 Preloading Demucs..."
+from demucs import pretrained
+pretrained.get_model("mdx_extra")
+EOF
 
-# ---------------------
-# 4. App Files
-# ---------------------
-WORKDIR /app
-COPY . .
-
-# ---------------------
-# 5. Startup Script
-# ---------------------
-RUN chmod +x /app/start.sh
-
-CMD ["/bin/bash", "/app/start.sh"]
+echo "🚀 Running backend..."
+uvicorn main:app --host 0.0.0.0 --port 8000
